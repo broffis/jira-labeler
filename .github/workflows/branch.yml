@@ -29,10 +29,10 @@ jobs:
         run: |
           COMMIT_MESSAGE="$(echo "${{ github.event.commits[0].message }}" | head -1)"
           echo "commit-message=$COMMIT_MESSAGE" >> $GITHUB_ENV
-      - id: get-branch
+      - name: Get Branch
+        id: get-branch
         uses: actions/github-script@v6
-        name: Get Branch
         with:
           script: |
             const run = require('.github/scripts/parse-branch.js');
-            run({ core }, { jiraPrefix: 'EFDC', commit: ${{ env.commit-message}} })
+            run({ core }, { jiraPrefix: "EFDC", commit: "${{ env.commit-message}}" })
