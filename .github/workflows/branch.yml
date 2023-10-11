@@ -1,0 +1,42 @@
+name: "Branch Build"
+
+on:
+  push:
+    branches:
+      - main
+      - EFDC-7049
+
+concurrency:
+  # Create run based on branch ref to prevent all uses of workflow canceling/queueing
+  # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-only-cancel-in-progress-jobs-or-runs-for-the-current-workflow
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Cancel earlier runs on branch
+  cancel-in-progress: true
+
+jobs:
+  get-branch-name:
+    name: Get branch name
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.get-branch.outputs.branch }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+      - run: |
+          rm package*
+          cd .github/scripts
+          npm i node-fetch
+      - name: Get commit message
+        id: commit-message
+        run: |
+          COMMIT_MESSAGE="$(echo "${{ github.event.commits[0].message }}" | head -1)"
+          echo "commit-message=$COMMIT_MESSAGE" >> $GITHUB_ENV
+      - id: get-branch
+        uses: actions/github-script@v6
+        name: Get Branch
+        with:
+          script: |
+            const run = require('.github/scripts/parse-branch.js');
+            run({ core }, { jiraPrefix: 'EFDC', commit: ${{ env.commit-message}} })
