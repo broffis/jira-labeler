@@ -35,4 +35,4 @@ jobs:
         with:
           script: |
             const run = require('.github/scripts/parse-branch.js');
-            run({ core }, { jiraPrefix: "EFDC", commit: "${{ env.commit-message}}" })
+            run({ core, github }, { jiraPrefix: "EFDC", commit: "${{ env.commit-message}}" })

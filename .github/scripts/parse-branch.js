@@ -1,5 +1,6 @@
-module.exports = ({ core }, { commit, jiraPrefix }) => {
-  console.log({ commit, jiraPrefix });
+module.exports = ({ core, github }, { commit, jiraPrefix }) => {
+  const githubCommit = github.event.commits[0].message;
+  console.log({ commit, jiraPrefix, githubCommit });
   const regex = new RegExp(`^${jiraPrefix}-\\d+`, "i");
   const match = commit.match(regex);
 
