@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - EFDC-7049
+      - EFDC-7049__local
 
 concurrency:
   # Create run based on branch ref to prevent all uses of workflow canceling/queueing
