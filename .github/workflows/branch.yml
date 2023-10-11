@@ -24,10 +24,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
-      - run: |
-          rm package*
-          cd .github/scripts
-          npm i node-fetch
       - name: Get commit message
         id: commit-message
         run: |
