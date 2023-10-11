@@ -19,9 +19,10 @@
   "homepage": "https://github.com/broffis/jira-labeler#readme",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "2.6.1"
   },
   "devDependencies": {
+    "@types/node": "^20.8.4",
     "typescript": "^5.2.2"
   }
 }
