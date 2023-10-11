@@ -1,0 +1,27 @@
+{
+  "name": "jira-labeler",
+  "version": "1.0.0",
+  "description": "Label Jira Issues",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/broffis/jira-labeler.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/broffis/jira-labeler/issues"
+  },
+  "homepage": "https://github.com/broffis/jira-labeler#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
