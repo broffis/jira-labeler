@@ -1,14 +1,19 @@
 // const fetch = require("node-fetch");
 // import fetch from "node-fetch";
 
-module.exports = ({ fetch }, { issueKey, label, jiraInstance, auth }) => {
+const dotenv = require("dotenv");
+dotenv.config();
+
+const auth = `${process.env.JIRA_USER}:${process.env.JIRA_KEY}`;
+
+module.exports = ({ fetch }, { issueKey, label, jiraInstance }) => {
   const body = {
     update: {
       labels: [{ add: label }],
     },
   };
 
-  console.log(fetch);
+  console.log({ auth });
 
   const authBuffer = Buffer.from(auth).toString("base64");
 

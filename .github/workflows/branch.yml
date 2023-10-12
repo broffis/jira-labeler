@@ -48,11 +48,14 @@ jobs:
       - run: |
           rm package*
           cd .github/scripts
-          npm i node-fetch
+          npm i node-fetch dot-env
       - name: Tag Jira Issue
         id: tag-issue
         uses: actions/github-script@v6
         with:
           script: |
             const run = require('.github/scripts/tag-issue.js');
-            await run({ github, core, context, fetch }, { issueKey: "${{ needs.get-branch-name.outputs.branch }}", label: "mock-artifact", jiraIstance: "fergusonprod", auth: "${{secrets.JIRA_USER}}:${{secrets.JIRA_KEY}}" })
+            await run({ github, core, context, fetch }, { issueKey: "${{ needs.get-branch-name.outputs.branch }}", label: "mock-artifact", jiraIstance: "fergusonprod" })
+        env:
+          JIRA_USER: ${{ secrets.JIRA_USER }}
+          JIRA_KEY: ${{ secrets.JIRA_KEY }}
