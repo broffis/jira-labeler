@@ -36,3 +36,19 @@ jobs:
           script: |
             const run = require('.github/scripts/parse-branch.js');
             run({ core }, { jiraPrefix: "EFDC", commit: "${{ env.commit-message}}" })
+  tag-issue:
+    name: Tag Issue
+    runs-on: ubuntu-latest
+    needs: get-branch-name
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+      - name: Tag Jira Issue
+        id: tag-issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const run = require('.github/scripts/tag-issue.js');
+            await run({}, { issueKey: "${{ needs.get-branch-name.outputs.branch }}", label: "mock-artifact", jiraIstance: "fergusonprod", auth: "${{secrets.JIRA_USER}}:${{secrets.JIRA_KEY}}" })
