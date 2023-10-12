@@ -1,4 +1,4 @@
-module.exports = ({ fetch }, { issueKey, label, jiraInstance, auth }) => {
+module.exports = (_, { issueKey, label, jiraInstance, auth }) => {
   const body = {
     update: {
       labels: [{ add: label }],
