@@ -35,7 +35,7 @@ jobs:
         with:
           script: |
             const run = require('.github/scripts/parse-branch.js');
-            run({ core }, { jiraPrefix: "EDFC", commit: "${{ env.commit-message}}" })
+            run({ core }, { jiraPrefix: "EFDC", commit: "${{ env.commit-message}}" })
   tag-issue:
     name: Tag Issue
     runs-on: ubuntu-latest
