@@ -51,4 +51,5 @@ jobs:
         with:
           script: |
             const run = require('.github/scripts/tag-issue.js');
-            await run({}, { issueKey: "${{ needs.get-branch-name.outputs.branch }}", label: "mock-artifact", jiraIstance: "fergusonprod", auth: "${{secrets.JIRA_USER}}:${{secrets.JIRA_KEY}}" })
+            const auth = Buffer.from("${{secrets.JIRA_USER}}:${{secrets.JIRA_KEY}}").toString('base64')
+            await run({}, { issueKey: "${{ needs.get-branch-name.outputs.branch }}", label: "mock-artifact", jiraIstance: "fergusonprod", auth })
