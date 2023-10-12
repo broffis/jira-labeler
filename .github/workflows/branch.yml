@@ -45,29 +45,14 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
+      - run: |
+          rm package*
+          cd .github/scripts
+          npm i node-fetch
       - name: Tag Jira Issue
         id: tag-issue
         uses: actions/github-script@v6
         with:
           script: |
             const run = require('.github/scripts/tag-issue.js');
-            const auth = Buffer.from("${{secrets.JIRA_USER}}:${{secrets.JIRA_KEY}}").toString('base64')
-            const body = {
-              update: {
-                labels: [{ add: "mock-artifact"}]
-              }
-            };
-
-            fetch("https://fergusonprod.atlassian.net/rest/api/2/issue/${{needs.get-branch-name.outputs.branch}}", {
-              method: "PUT",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                Authorization: `Basic ${auth}`
-              }
-            }).then((response) => {
-              console.log(`Response: ${response.status} ${response.statusText}`);
-              return response.text();
-            })
-            .then((text) => console.log(text))
-            .catch((err) => console.error(err));
+            await run({}, { issueKey: "${{ needs.get-branch-name.outputs.branch }}", label: "mock-artifact", jiraIstance: "fergusonprod", auth: "${{secrets.JIRA_USER}}:${{secrets.JIRA_KEY}}" })

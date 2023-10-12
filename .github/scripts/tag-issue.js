@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 module.exports = (_, { issueKey, label, jiraInstance, auth }) => {
   const body = {
     update: {
@@ -5,15 +7,15 @@ module.exports = (_, { issueKey, label, jiraInstance, auth }) => {
     },
   };
 
-  // const authBuffer = Buffer.from(auth).toString("base64");
+  const authBuffer = Buffer.from(auth).toString("base64");
 
   fetch(`https://${jiraInstance}.atlassian.net/rest/api/2/issue/${issueKey}`, {
     method: "PUT",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      // Authorization: `Basic ${authBuffer}`,
-      Authorization: `Basic ${auth}`,
+      Authorization: `Basic ${authBuffer}`,
+      // Authorization: `Basic ${auth}`,
     },
     body: JSON.stringify(body),
   })
