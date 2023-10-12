@@ -1,5 +1,4 @@
 module.exports = ({ core }, { commit, jiraPrefix }) => {
-  console.log({ commit, jiraPrefix });
   const regex = new RegExp(`^${jiraPrefix}-\\d+`, "i");
   const match = commit.match(regex);
 
