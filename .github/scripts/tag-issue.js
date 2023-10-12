@@ -5,14 +5,14 @@ module.exports = ({ issueKey, label, jiraInstance, auth }) => {
     },
   };
 
-  const auth = Buffer.from(auth).toString("base64");
+  const authBuffer = Buffer.from(auth).toString("base64");
 
   fetch(`https://${jiraInstance}.atlassian.net/rest/api/2/issue/${issueKey}`, {
     method: "PUT",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Basic ${auth}`,
+      Authorization: `Basic ${authBuffer}`,
     },
     body: JSON.stringify(body),
   })
