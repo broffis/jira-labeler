@@ -18,7 +18,7 @@ jobs:
     name: Get branch name
     runs-on: ubuntu-latest
     outputs:
-      branch: ${{ steps.get-branch.outputs.branch }}
+      issue-number: ${{ steps.get-branch.outputs.issueNumber }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -55,7 +55,7 @@ jobs:
         with:
           script: |
             const run = require('.github/scripts/tag-issue.js');
-            await run({ github, core, context, fetch }, { issueKey: "${{ needs.get-branch-name.outputs.branch }}", label: "mock-artifact", jiraIstance: "fergusonprod" })
+            await run({ github, core, context, fetch }, { issueKey: "${{ needs.get-branch-name.outputs.issue-number }}", label: "mock-artifact", jiraInstance: "fergusonprod" })
         env:
           JIRA_USER: ${{ secrets.JIRA_USER }}
           JIRA_KEY: ${{ secrets.JIRA_KEY }}
