@@ -1,6 +1,3 @@
-"use strict";
-// const fetch = require("node-fetch");
-Object.defineProperty(exports, "__esModule", { value: true });
 const fetchReq = require("node-fetch");
 const dotenv = require("dotenv");
 dotenv.config();

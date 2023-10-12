@@ -1,0 +1,61 @@
+name: "Branch Build"
+
+on:
+  push:
+    branches:
+      - main
+      - EFDC-7049__local
+
+concurrency:
+  # Create run based on branch ref to prevent all uses of workflow canceling/queueing
+  # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-only-cancel-in-progress-jobs-or-runs-for-the-current-workflow
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Cancel earlier runs on branch
+  cancel-in-progress: true
+
+jobs:
+  get-branch-name:
+    name: Get branch name
+    runs-on: ubuntu-latest
+    outputs:
+      issue-number: ${{ steps.get-branch.outputs.issueNumber }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+      - name: Get commit message
+        id: commit-message
+        run: |
+          COMMIT_MESSAGE="$(echo "${{ github.event.commits[0].message }}" | head -1)"
+          echo "commit-message=$COMMIT_MESSAGE" >> $GITHUB_ENV
+      - name: Get Branch
+        id: get-branch
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const run = require('.github/scripts/parse-branch.js');
+            run({ core }, { jiraPrefix: "EFDC", commit: "${{ env.commit-message}}" })
+  tag-issue:
+    name: Tag Issue
+    runs-on: ubuntu-latest
+    needs: get-branch-name
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+      - run: |
+          rm package*
+          cd .github/scripts
+          npm i node-fetch dotenv
+      - name: Tag Jira Issue
+        id: tag-issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const run = require('.github/scripts/tag-issue.js');
+            await run({ github, core, context, fetch }, { issueKey: "${{ needs.get-branch-name.outputs.issue-number }}", label: "mock-artifact", jiraInstance: "fergusonprod" })
+        env:
+          JIRA_USER: ${{ secrets.JIRA_USER }}
+          JIRA_KEY: ${{ secrets.JIRA_KEY }}
