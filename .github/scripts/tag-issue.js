@@ -1,5 +1,5 @@
-// const fetch = require("node-fetch");
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
+// import fetch from "node-fetch";
 
 module.exports = (_, { issueKey, label, jiraInstance, auth }) => {
   const body = {
